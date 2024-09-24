@@ -1,25 +1,17 @@
-'use client'
-import {useState} from "react";
 import { FaSearch } from "react-icons/fa";
-export default function Search({onSearch}) {
-    const [search, setSearch] = useState('');
 
-    const handleSearch = (e) => {
-      e.preventDefault();
-      onSearch(search);
-    };
-
-
+export default function Search({ searchTerm = '' }) {
   return (
-    <form onSubmit={handleSearch} className="flex justify-center mt-10">
+    <form method="GET" action="/" className="flex justify-center mt-10">
       <input
         type="text"
-        onChange={(e) => setSearch(e.target.value)}
+        name="search"
         placeholder="Search..."
-        className="align-middle text-center  border rounded-lg h-9 sm:w-56  md:w-96 lg:w-96"
+        defaultValue={searchTerm} // Populate input with the current search term
+        className="align-middle text-center border rounded-lg h-9 sm:w-56 md:w-96 lg:w-96"
       />
-       <button type="submit" className="relative -left-7 top-1">
-      <FaSearch />
+      <button type="submit" className="relative -left-7 top-1">
+        <FaSearch />
       </button>
     </form>
   );

@@ -15,18 +15,18 @@ import Filter from "./components/filter";
 * @returns {JSX.Element} - The rendered Home component.
 */
 export default async function Home({ searchParams }) {
-
+  const searchTerm = searchParams.search || '';
   const productsPerPage = 20;
   const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
 
   const skip = (currentPage - 1) * productsPerPage;
 
   // Fetch products for the current page
-  const products = await Fetch(skip);
+  const products = await Fetch(searchTerm, skip);
 
   return (
     <>
-    <Search/>
+    <Search searchTerm={searchTerm}/>
     <div className="flex justify-center mt-10 space-x-3">
     <Sort />
     <Filter />

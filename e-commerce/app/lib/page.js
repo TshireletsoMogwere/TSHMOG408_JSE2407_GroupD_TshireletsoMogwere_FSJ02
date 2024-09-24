@@ -8,8 +8,9 @@ const API_BASE_URL = 'https://next-ecommerce-api.vercel.app/products';
 * @throws {Error} - Throws an error if the API request fails.
 */
 
-export default async function Fetch(skip = 0) {
-  const response = await fetch(`${API_BASE_URL}/?skip=${skip}`);
+export default async function Fetch(search = '', skip = 0) {
+  const query = search ? `&search=${encodeURIComponent(search)}` : '';
+  const response = await fetch(`${API_BASE_URL}/?skip=${skip}${query}`);
   if (!response.ok) {
     throw new Error ('fetching failed');
   }
