@@ -2,8 +2,9 @@ import Search from './components/searchBar';
 import Filter from './components/filter';
 import Sort from './components/sort';
 import ProductList from './components/productList';
+import Paginate from './components/pagination';
 
-const fetchProducts = async () => {
+const fetchProducts = async (skip = 0, limit = 20) => {
   const response = await fetch('https://next-ecommerce-api.vercel.app/products', {
     cache: 'force-cache', // Cache this request for the lifetime of the page
     next: { revalidate: 60 }, // Revalidate every 60 seconds
@@ -38,7 +39,11 @@ const sortProducts = (products, sortOrder) => {
 };
 
 const Home = async ({ searchParams }) => {
-  const products = await fetchProducts(); // Fetch products on the server
+  const page = parseInt(searchParams.page, 10) || 1; // Get the current page from URL, default to 1
+  const limit = 20; // Number of products per page
+  const skip = (page - 1) * limit; // Calculate how many products to skip
+
+  const products = await fetchProducts(skip, limit); // Fetch products with pagination
   const categories = fetchCategories(products); // Fetch categories based on products
 
   // Extract search, filter, and sort parameters from the query
@@ -46,7 +51,7 @@ const Home = async ({ searchParams }) => {
   const selectedCategory = searchParams.category || 'All';
   const sortOrder = searchParams.sort || 'default';
 
-  // Filter products based on search and category, then sort them
+  // Filter and sort products
   const filteredProducts = filterProducts(products, searchTerm, selectedCategory);
   const sortedProducts = sortProducts(filteredProducts, sortOrder);
 
@@ -55,10 +60,21 @@ const Home = async ({ searchParams }) => {
       <Search />
       <Filter categories={categories} selectedCategory={selectedCategory} />
       <Sort sortOrder={sortOrder} />
+      
+      {/* Reset Filters Button */}
+      <a
+        href={`/?page=${page}`} // Adjust the URL to reset filters
+        className="mt-4 inline-block px-2 py-2 bg-white text-black rounded"
+      >
+        Reset Filters
+      </a>
+
       <ProductList products={sortedProducts} />
+
+      {/* Add pagination controls here */}
+      <Paginate currentPage={page} totalProducts={194} productsPerPage={limit} />
     </div>
   );
 };
 
 export default Home;
-

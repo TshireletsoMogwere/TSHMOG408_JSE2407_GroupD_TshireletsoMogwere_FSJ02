@@ -1,12 +1,11 @@
 "use client"; 
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Back from "../../assets/turn-back.png";
 import { FaStar, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { FetchProductById } from "../../lib/page";
 import Link from "next/link";
-
+import RootLayout from "@/app/layout";
 /**
 * This function is responsible for rendering the product details page.
 * It fetches the product data using the provided `id` from the route parameters.
@@ -53,6 +52,7 @@ export default function ProductDetails({ params }) {
 
   return (
     <>
+     <RootLayout productTitle={product.title}>
       {/* Back button */}
       <div className="mt-5 ml-10 w-14">
         <Link href="/">
@@ -186,6 +186,7 @@ export default function ProductDetails({ params }) {
           )}
         </div>
       </div>
+     </RootLayout>
     </>
   );
 }
