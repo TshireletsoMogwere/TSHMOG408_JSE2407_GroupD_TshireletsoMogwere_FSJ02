@@ -1,9 +1,13 @@
-import { MdArrowDropDown } from "react-icons/md";
-export default function Sort() {
+
+
+const Sort = ({ sortOrder, onSortChange }) => {
   return (
-    <button className="align-middle text-center  border rounded-lg h-6 w-20">
-      Sort
-      <MdArrowDropDown className="relative -top-5 left-14"/>
-    </button>
+    <select value={sortOrder} onChange={onSortChange}>
+      <option value="default">Sort by Default</option>
+      <option value="lowToHigh">Price: Low to High</option>
+      <option value="highToLow">Price: High to Low</option>
+    </select>
   );
-}
+};
+
+export default Sort;

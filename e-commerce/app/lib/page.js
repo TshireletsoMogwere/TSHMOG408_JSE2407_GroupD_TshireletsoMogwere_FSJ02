@@ -1,26 +1,37 @@
- /**
- * Fetches a list of products from the API.
- */
 const API_BASE_URL = 'https://next-ecommerce-api.vercel.app/products';
-/** 
-* @param {number} [skip=0] - The number of products to skip in the API request.
-* @returns {Promise<Object[]>} - A promise that resolves to an array of product objects.
-* @throws {Error} - Throws an error if the API request fails.
-*/
 
-export default async function Fetch(search = '', skip = 0) {
-  const query = search ? `&search=${encodeURIComponent(search)}` : '';
-  const response = await fetch(`${API_BASE_URL}/?skip=${skip}${query}`);
-  if (!response.ok) {
-    throw new Error ('fetching failed');
-  }
-  return response.json();
-  }
-
-  export async function FetchProductById(id) {
-    const response = await fetch(`${API_BASE_URL}/${id}`);
+const Fetch = async (searchTerm = '', skip = 0, sortBy = '', order = 'asc') => {
+  const apiUrl = `${API_BASE_URL}?search=${searchTerm}&skip=${skip}&sortBy=${sortBy}&order=${order}`;
+  console.log('Fetching from:', apiUrl); // Log the API URL
+  try {
+    const response = await fetch(apiUrl);
     if (!response.ok) {
-      throw new Error('Failed to fetch product');
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    return response.json(); 
+    const data = await response.json();
+    console.log('Fetched data:', data); // Log the fetched data
+    return data.products || []; // Ensure this matches the API response structure
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    return []; // Return an empty array if fetch fails
   }
+};
+
+// Function to fetch all products without filters
+const FetchAllProducts = async () => {
+  const apiUrl = `${API_BASE_URL}`; 
+  console.log('Fetching all products from:', API_BASE_URL); // Log the API URL
+  try {
+    const response = await fetch(API_BASE_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.products || []; // Ensure this matches the API response structure
+  } catch (error) {
+    console.error('Failed to fetch all products:', error);
+    return []; // Return an empty array if fetch fails
+  }
+};
+
+export { Fetch, FetchAllProducts };

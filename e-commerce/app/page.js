@@ -1,53 +1,92 @@
-import ProductCard from "./components/productCard";
-import Paginate from "./components/pagination";
-import Fetch from "./lib/page";
-import Search from "./components/searchBar";
-import Sort from "./components/sort";
-import Filter from "./components/filter";
+'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Search from './components/searchBar';
+import Filter from './components/filter'; 
+import Sort from './components/sort'; 
+import ProductList from './components/productList'; 
 
-/**
-* The Home component is responsible for rendering the product list and pagination.
-* It fetches products based on the current page and renders them using the ProductCard component.
-*
-* @param {Object} props - The component's props.
-* @param {Object} props.searchParams - The search parameters from the URL.
-* @returns {JSX.Element} - The rendered Home component.
-*/
-export default async function Home({ searchParams }) {
-  const searchTerm = searchParams.search || '';
-  const productsPerPage = 20;
-  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+const Home = () => {
+  const router = useRouter(); 
+  const [products, setProducts] = useState([]); 
+  const [categories, setCategories] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [selectedCategory, setSelectedCategory] = useState('All'); 
+  const [sortOrder, setSortOrder] = useState('default'); 
+  const [loading, setLoading] = useState(true); 
 
-  const skip = (currentPage - 1) * productsPerPage;
+  // Fetch products from the API
+  const fetchProducts = async () => {
+    const response = await fetch(`https://next-ecommerce-api.vercel.app/products`);
+    const data = await response.json();
+    setProducts(data); 
+    setLoading(false); 
+  };
 
-  // Fetch products for the current page
-  const products = await Fetch(searchTerm, skip);
+  // Fetch unique categories from products
+  const fetchCategories = () => {
+    const uniqueCategories = Array.from(new Set(products.map(product => product.category)));
+    setCategories(['All', ...uniqueCategories]); 
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      fetchCategories(); 
+    }
+  }, [products]);
+
+  // Filter products based on search and category
+  const filteredProducts = (Array.isArray(products) ? products : []).filter((product) => {
+    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  }).sort((a, b) => {
+    if (sortOrder === 'lowToHigh') return a.price - b.price;
+    if (sortOrder === 'highToLow') return b.price - a.price;
+    return 0; // Default sorting
+  });
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+  };
+
+  // Handle category filter change
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedCategory(value);
+  };
+
+  // Handle sort change
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+    setSortOrder(value);
+  };
 
   return (
-    <>
-    <Search searchTerm={searchTerm}/>
-    <div className="flex justify-center mt-10 space-x-3">
-    <Sort />
-    <Filter />
-    </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 mt-10">
-        {products.map((product, index) => (
-          <div
-            className="p-4 shadow-md rounded-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
-            key={index}
-          >
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
-
-      <Paginate
-        totalProducts={194}  
-        productsPerPage={productsPerPage}
-        currentPage={currentPage}
+    <div>
+      <Search searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+      <Filter 
+        categories={categories} 
+        selectedCategory={selectedCategory} 
+        onCategoryChange={handleCategoryChange} 
       />
-    </>
-  );
-}
+      <Sort sortOrder={sortOrder} onSortChange={handleSortChange} />
 
+      {/* Display a loading message while fetching */}
+      {loading ? (
+        <p>Loading products...</p>
+      ) : (
+        <ProductList products={filteredProducts} />
+      )}
+    </div>
+  );
+};
+
+export default Home;
