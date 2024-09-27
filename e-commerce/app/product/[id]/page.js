@@ -18,7 +18,7 @@ import RootLayout from "@/app/layout";
 * @returns {JSX.Element} - The rendered product details page.
 * @throws Will throw an error if the product data fetching fails.
 */
-export default function ProductDetails({ params }) {
+export default function ProductDetails({ params, searchParams }) {
   const { id } = params;
   const [product, setProduct] = useState(null);
   const [sortCriteria, setSortCriteria] = useState("date"); // default sort by date
@@ -55,10 +55,10 @@ export default function ProductDetails({ params }) {
      <RootLayout productTitle={product.title}>
       {/* Back button */}
       <div className="mt-5 ml-10 w-14">
-        <Link href="/">
-          <Image src={Back} alt="turn-back" />
-        </Link>
-      </div>
+          <Link href={{ pathname: '/', query: {...searchParams} }}>
+            <Image src={Back} alt="turn-back" />
+          </Link>
+        </div>
       
       {/* Product Details */}
       <div className="max-w-6xl mx-auto p-10">

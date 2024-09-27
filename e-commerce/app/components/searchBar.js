@@ -3,23 +3,23 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const Search = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const router = useRouter(); // Use router to manipulate the URL
+const Search = ({ initialSearchTerm }) => {
+  const [searchValue, setSearchValue] = useState(initialSearchTerm || '');
+  const router = useRouter();
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);
-    // Update the URL with the search term
-    router.push(`/?search=${value}`); // This will trigger a re-fetch in Home
+    setSearchValue(value);
+    router.push(`/?search=${value}`); // This will preserve the search term in the URL
   };
 
   return (
     <input
       type="text"
-      value={searchTerm}
+      value={searchValue}
       onChange={handleChange}
       placeholder="Search products..."
+      className="border rounded p-2"
     />
   );
 };

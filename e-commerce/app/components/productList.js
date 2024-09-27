@@ -3,7 +3,7 @@ import Image from "next/image";
 import Info from "../assets/info.png";
 import ImageCarousel from "./imageCarousel";
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products , searchParams}) => {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 mt-10">
         {products.map((product) => (
@@ -21,8 +21,15 @@ const ProductList = ({ products }) => {
       <div className="text-md text-orange-600 font-semibold mt-2 flex items-center justify-between">
         <span>€{product.price}</span>
         <button className="w-5">
-          <Link href={`/product/${product.id}`}>
+        <Link 
+            href={{
+              pathname: `/product/${product.id}`,
+              query: searchParams // Pass current search, filter, and sort state
+            }}
+          >
+            
             <Image src={Info} alt="info" />
+            
           </Link>
         </button>
       </div>
