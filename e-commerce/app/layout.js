@@ -4,6 +4,12 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+/**
+ * Generates metadata for the page.
+ *
+ * @param {string} productTitle - The title of the product to include in the metadata.
+ * @returns {Object} - An object containing the title and description for the page metadata.
+ */
 export function getMetadata(productTitle) {
   return {
     title: `${productTitle} DigitizeMart.`,
@@ -11,6 +17,14 @@ export function getMetadata(productTitle) {
   };
 }
 
+/**
+ * Root layout component that wraps the entire application.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components to render.
+ * @param {string} [props.productTitle=""] - The title of the product for metadata.
+ * @returns {JSX.Element} - The rendered root layout.
+ */
 export default function RootLayout({ children, productTitle = "" }) {
   const metadata = getMetadata(productTitle);
 

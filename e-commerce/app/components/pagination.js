@@ -10,8 +10,15 @@ import Link from "next/link";
  *
  * @returns {JSX.Element} - A JSX element containing the pagination links.
  */
-export default function Paginate({ totalProducts, productsPerPage, currentPage }) {
-  const totalPages = Math.ceil(totalProducts / productsPerPage); // Calculate total number of pages
+export default function Paginate({
+  totalProducts,
+  productsPerPage,
+  currentPage,
+}) {
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+  {
+    /*Calculate total number of pages */
+  }
   const pageNumbers = [];
 
   for (let i = 1; i <= totalPages; i++) {
@@ -21,10 +28,7 @@ export default function Paginate({ totalProducts, productsPerPage, currentPage }
   return (
     <div className="flex space-x-2 justify-center font-bold text-2xl">
       {pageNumbers.map((number) => (
-        <Link 
-          href={`/?page=${number}`} // Correct query for pagination
-          key={number}
-        >
+        <Link href={`/?page=${number}`} key={number}>
           <div
             className={`p-2 text-gray-600 ${currentPage === number ? "text-orange-500" : ""}`}
           >
