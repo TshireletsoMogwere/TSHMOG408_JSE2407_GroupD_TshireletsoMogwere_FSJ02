@@ -106,7 +106,7 @@ const Home = async ({ searchParams }) => {
 
   return (
     <div>
-      <Search initialSearchTerm={searchTerm} />
+      <Search initialSearchTerm={searchParams.search} />
       <div className="flex justify-center mt-10 space-x-2">
         <Filter categories={categories} selectedCategory={selectedCategory} />
         <Sort sortOrder={sortOrder} />

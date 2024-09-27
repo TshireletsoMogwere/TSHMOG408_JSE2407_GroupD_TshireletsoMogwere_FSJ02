@@ -52,7 +52,7 @@ export default function ProductDetails({ params, searchParams }) {
   });
 
   return (
-    <>
+  
       <RootLayout productTitle={product.title}>
         {/* Back button */}
         <div className="mt-5 ml-10 w-14">
@@ -194,6 +194,6 @@ export default function ProductDetails({ params, searchParams }) {
           </div>
         </div>
       </RootLayout>
-    </>
+    
   );
 }
