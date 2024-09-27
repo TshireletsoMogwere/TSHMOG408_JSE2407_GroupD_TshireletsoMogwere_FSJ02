@@ -5,7 +5,7 @@ import ProductList from './components/productList';
 import Paginate from './components/pagination';
 
 const fetchProducts = async (skip = 0, limit = 20) => {
-  const response = await fetch('https://next-ecommerce-api.vercel.app/products', {
+  const response = await fetch(`https://next-ecommerce-api.vercel.app/products?skip=${skip}&limit=${limit}`, {
     cache: 'force-cache', // Cache this request for the lifetime of the page
     next: { revalidate: 60 }, // Revalidate every 60 seconds
   });
@@ -60,7 +60,7 @@ const Home = async ({ searchParams }) => {
       <Search />
       <Filter categories={categories} selectedCategory={selectedCategory} />
       <Sort sortOrder={sortOrder} />
-      
+
       {/* Reset Filters Button */}
       <a
         href={`/?page=${page}`} // Adjust the URL to reset filters
@@ -71,7 +71,7 @@ const Home = async ({ searchParams }) => {
 
       <ProductList products={sortedProducts} />
 
-      {/* Add pagination controls here */}
+      {/* Pagination */}
       <Paginate currentPage={page} totalProducts={194} productsPerPage={limit} />
     </div>
   );
