@@ -58,15 +58,17 @@ const Home = async ({ searchParams }) => {
   return (
     <div>
       <Search initialSearchTerm={searchTerm} />
+      <div className="flex justify-center mt-10 space-x-2">
       <Filter categories={categories} selectedCategory={selectedCategory} />
       <Sort sortOrder={sortOrder} />
-
       <a
         href="/?page=1" // Adjust the URL to reset filters
-        className="mt-4 inline-block px-2 py-2 bg-white text-black rounded"
+        className="inline-block bg-white text-black rounded border border-gray-300 rounded-lg h-6 w-13 text-center px-3 focus:outline-none focus:border-orange-500'"
       >
         Reset Filters
       </a>
+      </div>
+     
 
       <ProductList products={sortedProducts} searchParams={searchParams} />
 

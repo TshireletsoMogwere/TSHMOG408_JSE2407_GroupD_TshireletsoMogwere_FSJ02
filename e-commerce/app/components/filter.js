@@ -14,7 +14,7 @@ const Filter = ({ categories, selectedCategory }) => {
   };
 
   return (
-    <select value={selectedCategory} onChange={handleCategoryChange}>
+    <select value={selectedCategory} onChange={handleCategoryChange} className='border border-gray-300 rounded-lg h-6 w-13 text-center px-3 focus:outline-none focus:border-orange-500'>
       {categories.map((category) => (
         <option key={category} value={category}>
           {category}

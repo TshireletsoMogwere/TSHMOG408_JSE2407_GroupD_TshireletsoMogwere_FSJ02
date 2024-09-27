@@ -14,13 +14,16 @@ const Search = ({ initialSearchTerm }) => {
   };
 
   return (
+    <div className="flex justify-center mt-5"> 
     <input
       type="text"
       value={searchValue}
       onChange={handleChange}
       placeholder="Search products..."
-      className="border rounded p-2"
+      className="text-center border rounded-lg h-9 sm:w-56 md:w-96 lg:w-96"
     />
+  </div>
+  
   );
 };
 

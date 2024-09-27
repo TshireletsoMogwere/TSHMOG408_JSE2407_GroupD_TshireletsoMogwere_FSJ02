@@ -14,7 +14,8 @@ const Sort = ({ sortOrder }) => {
   };
 
   return (
-    <select value={sortOrder} onChange={handleSortChange}>
+    
+    <select value={sortOrder} onChange={handleSortChange} className='border border-gray-300 rounded-lg h-6 w-13 text-center px-3 focus:outline-none focus:border-orange-500'>
       <option value="default">Default</option>
       <option value="lowToHigh">Price: Low to High</option>
       <option value="highToLow">Price: High to Low</option>
