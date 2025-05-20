@@ -41,15 +41,6 @@ export default function ProductDetails({ params, searchParams }) {
     return <p className="text-red-500 text-center text-xl mt-8">Loading...</p>;
   }
 
-  // Sort reviews based on the selected criteria
-  const sortedReviews = [...(product.reviews || [])].sort((a, b) => {
-    if (sortCriteria === "date") {
-      return new Date(b.date) - new Date(a.date); // most recent first
-    } else if (sortCriteria === "rating") {
-      return b.rating - a.rating; // highest rating first
-    }
-    return 0; // default case
-  });
 
   return (
   
@@ -139,60 +130,39 @@ export default function ProductDetails({ params, searchParams }) {
           </div>
 
           {/* User Reviews */}
-          <div className="mt-10">
-            <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
+{/* User Reviews */}
+<div className="mt-10">
+  <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
 
-            {/* Sorting Buttons */}
-            <div className="flex gap-4 mb-4">
-              <button
-                onClick={() => setSortCriteria("date")}
-                className={`py-2 px-4 rounded-lg ${sortCriteria === "date" ? "bg-orange-600 text-white" : "bg-gray-200"}`}
-              >
-                Sort by Date
-              </button>
-              <button
-                onClick={() => setSortCriteria("rating")}
-                className={`py-2 px-4 rounded-lg ${sortCriteria === "rating" ? "bg-orange-600 text-white" : "bg-gray-200"}`}
-              >
-                Sort by Rating
-              </button>
-            </div>
-
-            {sortedReviews.length > 0 ? (
-              <div className="space-y-6">
-                {sortedReviews.map((review, index) => (
-                  <div key={index} className="border-b pb-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-lg font-bold">
-                        {review.reviewerName}
-                      </h3>
-                      <span className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar
-                          key={i}
-                          className={`w-5 h-5 ${
-                            i < review.rating
-                              ? "text-orange-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-gray-700">{review.comment}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">
-                No reviews yet. Be the first to review!
-              </p>
-            )}
+  {product.reviews.length > 0 ? (
+    <div className="space-y-6">
+      {product.reviews.map((review, index) => (
+        <div key={index} className="border-b pb-4">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-lg font-bold">{review.reviewerName}</h3>
+            <span className="text-sm text-gray-500">
+              {new Date(review.date).toLocaleDateString()}
+            </span>
           </div>
+          <div className="flex items-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <FaStar
+                key={i}
+                className={`w-5 h-5 ${
+                  i < review.rating ? "text-orange-400" : "text-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+          <p className="text-gray-700">{review.comment}</p>
         </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500">No reviews yet. Be the first to review!</p>
+  )}
+</div>
+</div>
       </RootLayout>
     
   );

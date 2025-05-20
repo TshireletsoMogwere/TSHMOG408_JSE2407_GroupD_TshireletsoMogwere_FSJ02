@@ -1,7 +1,7 @@
  /**
  * Fetches a list of products from the API.
  */
-const API_BASE_URL = 'https://next-ecommerce-api.vercel.app/products';
+const API_BASE_URL = 'https://dummyjson.com/products';
 /** 
 * @param {number} [skip=0] - The number of products to skip in the API request.
 * @returns {Promise<Object[]>} - A promise that resolves to an array of product objects.
