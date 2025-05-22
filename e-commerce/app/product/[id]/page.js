@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Back from "../../assets/turn-back.png";
 import { FaStar, FaShoppingCart, FaHeart } from "react-icons/fa";
-import { FetchProductById } from "../../lib/page";
+import { FetchProductById } from "../../lib/fetch";
 import Link from "next/link";
 import RootLayout from "@/app/layout";
 /**
